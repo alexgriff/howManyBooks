@@ -20,19 +20,20 @@ app.book = {
       Book.prototype.thickness = function(){
         // 0.1mm
         var pageWidth = 0.1
-        // 0.3mm
-        var coverWidth = 0.3;
+        // adapted from http://www.bookmobile.com/art-book-printing/calculating-spine-width-and-book-weight-before-your-book-is-printed/
+        // converted to mm
+        var coverWidth= 0.39624;
         var pageThickness;
         var bookThickness;
 
         pageThickness = this.pageCount * pageWidth;
-        bookThickness = pageThickness + (2 * coverWidth);
+        bookThickness = pageThickness + coverWidth;
 
         return bookThickness; 
       }
 
       return Book;
-    }());
+    }())
   },
   controller: {
     show: {
@@ -42,15 +43,48 @@ app.book = {
 
         book_title = $('#book_title').val();
 
-        //query the api with user input
-        app.book.adapater.getBy(book_title).then(function(){
+        //query the api with user
+        app.book.adapter.getBy(book_title).then(function(e){
           
         })
 
+      },
+      render: function(book){
+        $('.shelf').append(book)
       }
     }
+  },
+  adapter: {
+    getBy: function(book_title){
+      debugger;
+     $.ajax({
+        "url":  "https://www.googleapis.com/books/v1/volumes?q=" + book_title,
+        "method": "GET",
+      }).done(function(response){
+        debugger;
+      });
+    }
   }
+  // adapter: {
+  //   getBy: (function(book_title){
+  //     $.ajax({
+  //       "url":  "https://www.googleapis.com/books/v1/volumes?q=" + book_title,
+  //       "method": "GET",
+  //     }).done(function(response){
+  //       debugger;
+  //     });
+  //   })
+  // } 
 }
+
+
+ // $.ajax({
+//     "url":  "https://www.googleapis.com/books/v1/volumes?q=power+broker",
+//     "method": "GET",
+//   }).done(function(e){
+//     debugger;
+//   });
+
 
 // app.picture = {
 //   model: {
@@ -330,3 +364,17 @@ app.book = {
 // // https://api.spotify.com/v1/search?query=tania&type=artist
 // // https://www.reddit.com/r/funny.json
 // // https://api.spotify.com/v1/search?query=paul%20simon&type=artist
+
+
+function test(book_title){
+  $.ajax({
+    "url":  "https://www.googleapis.com/books/v1/volumes?q=" + book_title,
+    "method": "GET",
+  }).done(function(response){
+    debugger;
+  });
+}
+
+
+
+
