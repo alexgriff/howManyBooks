@@ -48,9 +48,9 @@ app.book = {
         book_title = $('#book_title').val();
 
         //query the api with user
-        app.book.adapter.getBy(book_title).then(function(e){
-          
-        })
+        app.book.adapter.getBy(book_title).then(function(){
+          debugger;
+        });
 
       },
       render: function(book){
@@ -60,12 +60,11 @@ app.book = {
   },
   adapter: {
     getBy: function(book_title){
-      debugger;
-     $.ajax({
+     return $.ajax({
         "url":  "https://www.googleapis.com/books/v1/volumes?q=" + book_title,
         "method": "GET",
       }).done(function(response){
-        debugger;
+        return response;
       });
     }
   }
