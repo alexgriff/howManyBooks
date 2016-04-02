@@ -7,10 +7,9 @@ $(function(){
   $('input:submit').click(app.book.controller.show.init);
 })
 
-var shelving= 
-
 app = {
 }
+
 
 
 app.book = {
@@ -49,6 +48,7 @@ app.book = {
         var book_title;
 
         book_title = $('#book_title').val();
+        $('#book_title').val('');
         var pName = $('#person_name').val();
         var pHeight = $('#person_height').val();
         var pMouthSize = $('#person_mouthSize').val();
@@ -65,7 +65,11 @@ app.book = {
 
       },
       render: function(book){
-        $('.shelf').append('<img src='+ book.img +'>')
+        $('.shelf').prepend('<img src='+ book.img +'>')
+        var shelverResponse= SHELVING.addBook(book);
+        var spaceRemaining= SHELVING.spaceLeft()
+        $('#spaceLeft').text(spaceRemaining);
+        $('#shelverResponse').text(shelverResponse);
       }
     }
   },
@@ -133,17 +137,21 @@ app.shelf={
       var counter= 0;
       function Shelf(){
         this.length= 300; //millimeters;
-        this.bookDisplacementTotal;
+        this.bookDisplacementTotal = 0;
         this.books = []
+        this.spaceLeft= function(){
+          return this.length - this.bookDisplacementTotal;
+        }
       }
 
       Shelf.prototype.addBook= function(book){
-        this.bookDisplacementTotal+= book.thickness;
+        this.bookDisplacementTotal+= book.thickness();
         if(this.bookDisplacementTotal<= this.length){
           this.books.push(book);
           return "That'll fit!"
         } else{
-          this.bookDisplacementTotal-= book.thickness
+          this.bookDisplacementTotal-= book.thickness()
+          $('.remainingSpace').hide();
           return "Too Many Books!"
         }
       }
@@ -152,3 +160,6 @@ app.shelf={
     }())
   }
 }
+
+var SHELVING= new app.shelf.model.new();
+
