@@ -33,7 +33,7 @@ app.book = {
         pageThickness = this.pageCount * pageWidth;
         bookThickness = pageThickness + coverWidth;
 
-        return bookThickness; 
+        return Math.floor(bookThickness); 
       }
 
       return Book;
@@ -46,11 +46,13 @@ app.book = {
         var book_title;
 
         book_title = $('#book_title').val();
-        $('#book_title').val('')
 
         //query the api with user
 
-        app.book.adapter.getBy(book_title);
+        app.book.adapter.getBy(book_title).then(function(book){
+
+          debugger;
+        });
 
       },
       render: function(book){
@@ -59,26 +61,28 @@ app.book = {
     }
   },
   adapter: {
-  //   getBy: (function(book_title){
-  //     debugger
-  //     $.ajax({
-  //       method: "GET",
-  //       url: "https://www.googleapis.com/books/v1/volumes?q=" + book_title
-  //       }).then(function(response){
-  //         debugger;
-  //     });
-  //   })
+    // getBy
+    getBy: (function(book_title){
+      return $.ajax({
+        method: "GET",
+        url: "https://www.googleapis.com/books/v1/volumes?q=" + book_title
+        }).then(function(response){
+          var bookInfo;
+          var title;
+          var pageCount;
+          var book;
+          
+          bookInfo = response.items[0].volumeInfo;
+          title = bookInfo.title;
+          pageCount = bookInfo .pageCount;
+
+          book = new app.book.model.new(title, pageCount);
+          return book;
+      });
+    })
   }
 }
 
-
-app.book.adapter.getBy= function(book_title){
-  $.ajax({
-    "method": "GET",
-    "url":  "https://www.googleapis.com/books/v1/volumes?q=" + book_title,
-  }).then(function(response){
-  });
-}
 
 
 
@@ -117,18 +121,9 @@ app.shelf={
   model:{
     new:(function(){
       var counter= 0;
-      function Shelf(){
-        this.length= 300; //millimeters;
-        this.bookDisplacementTotal;
-        this.books = [];
-      }
-
-      Shelf.prototype.addBook= function(book){
-        this.bookDisplacementTotal+= book.thickness;
-        this.books.push(book);
-      }
-
-      return Shelf;
+      var shelf= (function Shelf(){
+        return 'foo';
+      })
     }())
   }
 }
