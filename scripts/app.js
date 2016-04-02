@@ -1,5 +1,9 @@
 
 $(function(){
+  var friend= app.person.model.genericPerson()
+  $('#person_name').val(friend.name);
+  $('#person_height').val(friend.height);
+  $('#person_mouthSize').val(friend.mouthSize);
   $('input:submit').click(app.book.controller.show.init);
 })
 
@@ -32,7 +36,7 @@ app.book = {
       }
 
       return Book;
-    }());
+    }())
   },
   controller: {
     show: {
@@ -176,25 +180,33 @@ app.book = {
 
 app.person={
   model:{
-    new:{
+    new:(function(){
       var counter = 0;
       function Person(height, mouthSize, name){
-        this.height = height;
+        this.height = (height * 1000);
         this.mouthSize = mouthSize;
         this.name = name;
       }
 
-      Person.prototype.booksByHeight = function(book) {
+      Person.prototype.booksByHeight = function(criteria, book) {
         var numBooks;
-        numBooks= 
+        var person=this;
+        if(criteria===height){
+          numBooks= person.height / book.thickness;
+        } else{
+          numBooks= person.mouthSize /book.thickness;
+        }
         return numBooks;
       };
 
       return Person;
     }()),
-    genericPerson:{
-      new app.person.model.new(1615.44, 50, "The Average Person")
-    }
+    genericPerson:(function(){
+      var friend = new app.person.model.new(1.6, 50, "The Average Person");
+      return friend;
+    })
+  }
+}
 
 // // app.artist.adapter.getBy("paul simon") -> {name: 'paul simon', }
 // // Artist.find_by(name: 'paul simon')
