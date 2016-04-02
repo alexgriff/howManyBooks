@@ -122,9 +122,18 @@ app.shelf={
   model:{
     new:(function(){
       var counter= 0;
-      var shelf= (function Shelf(){
-        return 'foo';
-      })
+      function Shelf(){
+        this.length= 300; //millimeters;
+        this.bookDisplacementTotal;
+        this.books = [];
+      }
+
+      Shelf.prototype.addBook= function(book){
+        this.bookDisplacementTotal+= book.thickness;
+        this.books.push(book);
+      }
+
+      return Shelf;
     }())
   }
 }
