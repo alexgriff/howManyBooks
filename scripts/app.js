@@ -129,7 +129,27 @@ app.state = {
 
 
 
+app.person={
+  model:{
+    new:{
+      var counter = 0;
+      function Person(height, mouthSize, name){
+        this.height = height;
+        this.mouthSize = mouthSize;
+        this.name = name;
+      }
 
+      Person.prototype.booksByHeight = function(book) {
+        var numBooks;
+        numBooks= 
+        return numBooks;
+      };
+
+      return Person;
+    }()),
+    genericPerson:{
+      new app.person.model.new(1615.44, 50, "The Average Person")
+    }
 
 
 
