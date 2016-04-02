@@ -45,29 +45,41 @@ app.book = {
       init: function(event){
         event.preventDefault();
         var book_title;
+        var author;
 
         book_title = $('#book_title').val();
+        author = $('#book_author').val();
 
-        //query the api with user
+        //reset fields
+        $('.error').empty();
+        $('#book_title').val("");
+        $('#book_author').val("");
 
 
-        app.book.adapter.getBy(book_title).then(function(book){
-
-          app.book.controller.show.render(book);
+        //query the api with user input
+        app.book.adapter.getBy(book_title, author).then(function(book){
+          if (book) {
+            app.book.controller.show.render(book);
+          } else {
+            app.book.controller.show.renderFailure();
+          }
         });
 
 
       },
       render: function(book){
         $('.shelf').append('<img src='+ book.img +'>')
+      },
+      renderFailure: function() {
+        $('.error').append("<p>Sorry, we couldn't find that book </p>")
       }
     }
   },
   adapter: {
-    getBy: (function(book_title){
+    getBy: (function(book_title, author){
        return $.ajax({
          method: "GET",
-         url: "https://www.googleapis.com/books/v1/volumes?q=" + book_title
+         url: "https://www.googleapis.com/books/v1/volumes?q=" + book_title +"+inauthor:" + author
          }).then(function(response){
            var bookInfo;
            var title;
@@ -75,12 +87,15 @@ app.book = {
            var img;
            var book;
            
-           bookInfo = response.items[0].volumeInfo;
-           title = bookInfo.title;
-           pageCount = bookInfo .pageCount;
-           img = bookInfo.imageLinks.thumbnail;
- 
-           book = new app.book.model.new(title, pageCount, img);
+          if(response.items){
+            bookInfo = response.items[0].volumeInfo;
+            title = bookInfo.title;
+            pageCount = bookInfo .pageCount;
+            img = bookInfo.imageLinks.thumbnail;
+  
+            book = new app.book.model.new(title, pageCount, img);
+          }
+          
            return book;
        });
     })

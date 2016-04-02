@@ -13,16 +13,22 @@
   <h1 id="brand">How Many Books</h1>
      
        
-  <div class="details">Enter the title of a book</div>
+  <div class="details">Add a book to your bookshelf</div>
    
    <form action="">
      <div class='name '>
-       <label for="name">Book Title</label>
+       <label for="name">Title</label>
        <input id='book_title' class='input input_name' type="text" >
+       <br/>
+       <label for="name">Author (optional)</label>
+       <input id='book_author' class='input input_author' type="text" >
      </div>
      
-     <input type="submit">
+     <input type="submit" value="Add book">
    </form>
+   
+   <div class="error">
+   </div>
 
    <div class="shelf">
    </div>
