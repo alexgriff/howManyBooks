@@ -7,6 +7,8 @@ $(function(){
   $('input:submit').click(app.book.controller.show.init);
 })
 
+var shelving= 
+
 app = {
 }
 
@@ -46,6 +48,10 @@ app.book = {
         var book_title;
 
         book_title = $('#book_title').val();
+        var pName = $('#person_name').val();
+        var pHeight = $('#person_height').val();
+        var pMouthSize = $('#person_mouthSize').val();
+        new app.person.model.new(pName, pHeight, pMouthSize)
 
         //query the api with user
 
@@ -125,12 +131,18 @@ app.shelf={
       function Shelf(){
         this.length= 300; //millimeters;
         this.bookDisplacementTotal;
-        this.books = [];
+        this.books = []
       }
 
       Shelf.prototype.addBook= function(book){
         this.bookDisplacementTotal+= book.thickness;
-        this.books.push(book);
+        if(this.bookDisplacementTotal<= this.length){
+          this.books.push(book);
+          return "That'll fit!"
+        } else{
+          this.bookDisplacementTotal-= book.thickness
+          return "Too Many Books!"
+        }
       }
 
       return Shelf;
