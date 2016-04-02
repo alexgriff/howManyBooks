@@ -16,9 +16,10 @@ app.book = {
     new: (function(){
       var counter = 0;
       
-      function Book(title, pageCount){
+      function Book(title, pageCount, img){
         this.title = title;
         this.pageCount = pageCount;
+        this.img = img;
       }
 
       Book.prototype.thickness = function(){
@@ -52,13 +53,13 @@ app.book = {
 
         app.book.adapter.getBy(book_title).then(function(book){
 
-          debugger;
+          app.book.controller.show.render(book);
         });
 
 
       },
       render: function(book){
-        $('.shelf').append(book)
+        $('.shelf').append('<img src='+ book.img +'>')
       }
     }
   },
@@ -71,13 +72,15 @@ app.book = {
            var bookInfo;
            var title;
            var pageCount;
+           var img;
            var book;
            
            bookInfo = response.items[0].volumeInfo;
            title = bookInfo.title;
            pageCount = bookInfo .pageCount;
+           img = bookInfo.imageLinks.thumbnail;
  
-           book = new app.book.model.new(title, pageCount);
+           book = new app.book.model.new(title, pageCount, img);
            return book;
        });
     })
