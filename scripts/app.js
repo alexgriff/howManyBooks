@@ -204,24 +204,27 @@ app.shelf={
 
           this.books.push(book);
           this.bookDisplacementTotal += book.thickness();
+          app.shelf.controller.show.renderMessage("That Fits on Your Shelf!")
         } else {
           // first add the book there isnt room for
 
           this.books.push(book);
           this.bookDisplacementTotal += book.thickness();
+          app.shelf.controller.show.renderMessage("Too Many Books!")
           // then subtract the book that fell off 
-          var fallenBook = this.fallsOff();
-          this.bookDisplacementTotal -= fallenBook.thickness();
-          app.book.controller.show.renderFallen(fallenBook);
+          // and continue to do so until there is space
+          while (!this.isThereRoom(book)){
+            var fallenBook = this.fallsOff();
+            this.bookDisplacementTotal -= fallenBook.thickness();
+            app.book.controller.show.renderFallen(fallenBook);
+          }
         }
       }
 
       Shelf.prototype.isThereRoom = function(book){
         if ((this.bookDisplacementTotal + book.thickness()) > this.length) {
-          app.shelf.controller.show.renderMessage("Too Many Books!")
           return false;
         } else {
-          app.shelf.controller.show.renderMessage("That Fits on Your Shelf!")
           return true;
         }
       }
