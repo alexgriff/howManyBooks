@@ -137,8 +137,8 @@ app.book = {
 
       renderFallen: function(fallenBook) {
         $('.floor').css("display", "block");
-        $('.fallen').prepend('<img id=fallen_off src='+ fallenBook.img +'>');
-        $('#fallen_off').rotate(45);
+        $('.fallen').append('<img class=fallen_off src='+ fallenBook.img +'>');
+        $('.fallen_off').rotate(45);
       }
     }
   },
