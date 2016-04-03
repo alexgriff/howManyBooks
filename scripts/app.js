@@ -3,14 +3,13 @@ var app = {
 //this shouldnt have to be a global var, but works for now
 var currentShelf;
 
-var distanceToMoon= 370300000000;
 var friend;
 
 
 // ON DOCUMENT READY
 $(function(){
   // initialize person and shelf models
-  var friend= app.person.model.genericPerson();
+  friend= app.person.model.genericPerson();
   var shelf = new app.shelf.model.new();
 
   // render shelf space
@@ -124,11 +123,11 @@ app.book = {
         $('.shelf').prepend('<img src='+ book.img +'>')
         var btmth=  friend.booksBy("mouth", book).toFixed(2);
         var bth=    friend.booksBy("height", book).toFixed(2);
-        var bookToMoon = Math.floor(distanceToMoon / book.thickness());
     
-        $('#booksToMouth').append(btmth);
-        $('#booksToHeight').append(bth);
-        $('#booksToMoon').append(bookToMoon);
+        $('#booksToMouth').text(btmth);
+        $('.personForm').hide();
+        $('#booksToHeight').text(bth);
+        $('.pName').text(friend.name);
         
         // // is there room on shelf
         // if (shelf.isThereRoom(book)) {
