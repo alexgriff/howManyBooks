@@ -3,10 +3,13 @@ var app = {
 //this shouldnt have to be a global var, but works for now
 var currentShelf;
 
+var distanceToMoon= 370300000000;
+var friend;
+
 
 // ON DOCUMENT READY
 $(function(){
-  // initialize persona nd shelf models
+  // initialize person and shelf models
   var friend= app.person.model.genericPerson();
   var shelf = new app.shelf.model.new();
 
@@ -18,12 +21,19 @@ $(function(){
   $('#person_name').val(friend.name);
   $('#person_height').val(friend.height);
   $('#person_mouthSize').val(friend.mouthSize);
+  $('.personForm').hide();
+  $('.importantMetrics').hide();
 
   // add listeners
   $('input:submit').click(function(){
     currentShelf = shelf;
     app.book.controller.show.init(event)
+    $('.importantMetrics').show();
   });
+  $('button').click(function(){
+    $('.personForm').toggle();
+  });
+
 })
 
 
@@ -83,12 +93,15 @@ app.book = {
         var pName = $('#person_name').val();
         var pHeight = $('#person_height').val();
         var pMouthSize = $('#person_mouthSize').val();
-        new app.person.model.new(pName, pHeight, pMouthSize)
+        friend = new app.person.model.new(pHeight, pMouthSize, pName)
 
         //reset fields
         $('.error').empty();
         $('#book_title').val("");
         $('#book_author').val("");
+        $('#booksToMouth').empty();
+        $('#booksToMoon').empty();
+        $('#booksToHeight').empty();
 
 
         //query the api with user input
@@ -109,6 +122,13 @@ app.book = {
       },
       render: function(book){
         $('.shelf').prepend('<img src='+ book.img +'>')
+        var btmth=  friend.booksBy("mouth", book).toFixed(2);
+        var bth=    friend.booksBy("height", book).toFixed(2);
+        var bookToMoon = Math.floor(distanceToMoon / book.thickness());
+    
+        $('#booksToMouth').append(btmth);
+        $('#booksToHeight').append(bth);
+        $('#booksToMoon').append(bookToMoon);
         
         // // is there room on shelf
         // if (shelf.isThereRoom(book)) {
@@ -276,18 +296,18 @@ app.person={
     new:(function(){
       var counter = 0;
       function Person(height, mouthSize, name){
-        this.height = (height * 1000);
+        this.height = height;
         this.mouthSize = mouthSize;
         this.name = name;
       }
 
-      Person.prototype.booksByHeight = function(criteria, book) {
+      Person.prototype.booksBy = function(criteria, book) {
         var numBooks;
-        var person=this;
-        if(criteria===height){
-          numBooks= person.height / book.thickness;
+        if(criteria==="height"){
+
+          numBooks= this.height / book.thickness();
         } else{
-          numBooks= person.mouthSize /book.thickness;
+                    numBooks= parseInt(this.mouthSize) /book.thickness();
         }
         return numBooks;
       };
@@ -295,7 +315,7 @@ app.person={
       return Person;
     }()),
     genericPerson:(function(){
-      var friend = new app.person.model.new(1.6, 50, "The Average Person");
+      var friend = new app.person.model.new(1600, 50, "The Average Person");
       return friend;
     })
   }
