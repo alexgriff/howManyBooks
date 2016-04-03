@@ -136,8 +136,9 @@ app.book = {
       },
 
       renderFallen: function(fallenBook) {
-        $('.fallen').css("display", "block")
-        $('.fallen').append('<img src='+ fallenBook.img +'>')
+        $('.floor').css("display", "block");
+        $('.fallen').prepend('<img id=fallen_off src='+ fallenBook.img +'>');
+        $('#fallen_off').rotate(45);
       }
     }
   },
