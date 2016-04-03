@@ -230,9 +230,12 @@ app.shelf={
           this.books.push(book);
           this.bookDisplacementTotal += book.thickness();
           app.shelf.controller.show.renderMessage("Too Many Books!")
+          
           // then subtract the book that fell off 
           // and continue to do so until there is space
-          while (!this.isThereRoom(book)){
+          // (cant use the is there room method again b/c
+          // current book has already been added to displacement total)
+          while (this.bookDisplacementTotal > this.length){
             var fallenBook = this.fallsOff();
             this.bookDisplacementTotal -= fallenBook.thickness();
             app.book.controller.show.renderFallen(fallenBook);
@@ -310,7 +313,8 @@ app.person={
 
           numBooks= this.height / book.thickness();
         } else{
-                    numBooks= parseInt(this.mouthSize) /book.thickness();
+
+          numBooks= parseInt(this.mouthSize) /book.thickness();
         }
         return numBooks;
       };
