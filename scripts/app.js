@@ -244,15 +244,19 @@ app.shelf={
         // clear out what's there
         $('.shelfInfo').empty();
         $('.shelf').empty();
+        $('.shelfContents ul').empty();
 
-        // render each book on shelf
+        // update spaceinfo
+        $('.shelfInfo').append('<p>Your book shelf has '+ shelf.remainingSpace() +' millimeters of free space</p>')
+
+        // render each book on shelf and add info
         for(var i = 0; i < shelf.books.length; i ++){
           var book;
           book = shelf.books[i];
           app.book.controller.show.render(book);
+          $('.shelfContents ul').append('<li>' + book.title + " - " + book.pageCount + ' pages</li>')
         }
-        // update info
-        $('.shelfInfo').append('<p>Your shelf has '+ shelf.remainingSpace() +'mm of remaining space</p>')
+        
       },
       renderMessage: function(msg){
         $('.shelverResponse').empty();
