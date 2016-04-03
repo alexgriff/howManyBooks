@@ -1,7 +1,10 @@
 var app = {
 }
+//this shouldnt have to be a global var, but works for now
 var currentShelf;
 
+
+// ON DOCUMENT READY
 $(function(){
   // initialize persona nd shelf models
   var friend= app.person.model.genericPerson();
@@ -25,8 +28,14 @@ $(function(){
 
 
 
-
+// =================
+//      BOOK
+// =================
 app.book = {
+  
+  // ----------
+  //   MODEL
+  // ----------
   model: {
     new: (function(){
       var counter = 0;
@@ -55,6 +64,10 @@ app.book = {
       return Book;
     }())
   },
+  
+  // ----------------
+  //   CONTROLLER
+  // ----------------
   controller: {
     show: {
       init: function(event){
@@ -62,9 +75,11 @@ app.book = {
         var book_title;
         var author;
 
+        // grab the user's book input
         book_title = $('#book_title').val();
         author = $('#book_author').val();
 
+        // grab the user's person input
         var pName = $('#person_name').val();
         var pHeight = $('#person_height').val();
         var pMouthSize = $('#person_mouthSize').val();
@@ -78,42 +93,58 @@ app.book = {
 
         //query the api with user input
         app.book.adapter.getBy(book_title, author).then(function(book){
+          // if the api found a book...
           if (book) {
-            app.book.controller.show.render(book, currentShelf);
+            // add book to the shelf
+            currentShelf.addBook(book);
+            // render the whole shelf with the new book
+            app.shelf.controller.show.render(currentShelf);
           } else {
+            // render the error message
             app.book.controller.show.renderFailure();
           }
         });
 
 
       },
-      render: function(book, shelf){
-        // is there room on shelf
-        if (shelf.isThereRoom(book)) {
-          // add book thumbnail
-          $('.shelf').prepend('<img src='+ book.img +'>')
-          // add book to shelf
-          shelf.addBook(book);
-        } else {
-          // add book thumbnail
-          $('.shelf').prepend('<img src='+ book.img +'>')
-          // add book to shelf
-          shelf.addBook(book);
-          debugger;
-        }
-          // empty currentShelf info
-          $('.shelfInfo').empty();
-          // render shelf info
-          app.shelf.controller.show.render(shelf);
+      render: function(book){
+        $('.shelf').prepend('<img src='+ book.img +'>')
+        
+        // // is there room on shelf
+        // if (shelf.isThereRoom(book)) {
+        //   // add book thumbnail
+        //   $('.shelf').prepend('<img src='+ book.img +'>')
+        //   // add book to shelf
+        //   shelf.addBook(book);
+        // } else {
+        //   // add book thumbnail
+        //   $('.shelf').prepend('<img src='+ book.img +'>')
+        //   // add book to shelf
+        //   shelf.addBook(book);
+        //   shelf.fallsOff()
+        // }
+        //   // empty currentShelf info
+        //   $('.shelfInfo').empty();
+        //   // render shelf info
+        //   app.shelf.controller.show.render(shelf);
 
         
       },
       renderFailure: function() {
         $('.error').append("<p>Sorry, we couldn't find that book </p>")
 
+      },
+
+      renderFallen: function(fallenBook) {
+        $('.fallen').css("display", "block")
+        $('.fallen').append('<img src='+ fallenBook.img +'>')
       }
     }
   },
+
+  // -------------
+  //   ADAPTER
+  // -------------
   adapter: {
     getBy: (function(book_title, author){
        return $.ajax({
@@ -141,9 +172,100 @@ app.book = {
   }
 }
 
+// =================
+//      SHELF
+// =================
 
 
+app.shelf={
+  // ----------
+  //   MODEL
+  // ----------
+  model:{
+    new:(function(){
+      var counter= 0;
+      function Shelf(){
+        this.length= 300; //millimeters;
+        this.bookDisplacementTotal = 0;
+        this.books = []
+      }
 
+      // Prototypes
+      Shelf.prototype.remainingSpace = function(){
+        var space;
+        space = this.length - this.bookDisplacementTotal;
+        
+        if (space > 0){
+          return space;
+        } else {
+          return 0;
+        }
+      }
+
+      Shelf.prototype.addBook= function(book){
+        if (this.isThereRoom(book)){
+          this.books.push(book);
+          this.bookDisplacementTotal+= book.thickness();
+        } else {
+          this.books.push(book);
+          this.bookDisplacementTotal+= book.thickness();
+          var fallenBook = this.fallsOff();
+          app.book.controller.show.renderFallen(fallenBook);
+        }
+      }
+
+      Shelf.prototype.isThereRoom = function(book){
+        if ((this.bookDisplacementTotal + book.thickness()) > this.length) {
+          app.shelf.controller.show.renderMessage("Too Many Books!")
+          return false;
+        } else {
+          app.shelf.controller.show.renderMessage("That Fits on Your Shelf!")
+          return true;
+        }
+      }
+
+      Shelf.prototype.fallsOff = function(){
+        //remove first book
+        return this.books.splice(0, 1)[0];
+      }
+
+      return Shelf;
+    }())
+  },
+
+
+  // ----------------
+  //   CONTROLLER
+  // ----------------
+  controller: {
+    show: {
+      render: function(shelf){
+        // clear out what's there
+        $('.shelfInfo').empty();
+        $('.shelf').empty();
+
+        // render each book on shelf
+        for(var i = 0; i < shelf.books.length; i ++){
+          var book;
+          book = shelf.books[i];
+          app.book.controller.show.render(book);
+        }
+        // update info
+        $('.shelfInfo').append('<p>Your shelf has '+ shelf.remainingSpace() +'mm of remaining space</p>')
+      },
+      renderMessage: function(msg){
+        $('.shelverResponse').empty();
+        $('.shelverResponse').append(msg);
+      }
+    }
+
+  }
+
+}
+
+// =================
+//      PERSON
+// =================
 app.person={
   model:{
     new:(function(){
@@ -172,71 +294,5 @@ app.person={
       return friend;
     })
   }
-}
-
-
-app.shelf={
-  model:{
-    new:(function(){
-      var counter= 0;
-      function Shelf(){
-        this.length= 500; //millimeters;
-        this.bookDisplacementTotal = 0;
-        this.books = []
-        this.spaceLeft= function(){
-          return this.length - this.bookDisplacementTotal;
-        }
-      }
-
-      Shelf.prototype.remainingSpace = function(){
-        var space;
-        space = this.length - this.bookDisplacementTotal;
-        
-        if (space > 0){
-          return space;
-        } else {
-          return 0;
-        }
-      }
-
-      Shelf.prototype.addBook= function(book){
-        this.books.push(book);
-      }
-
-      Shelf.prototype.isThereRoom = function(book){
-        this.bookDisplacementTotal+= book.thickness();
-
-        if (this.bookDisplacementTotal > this.length) {
-          app.shelf.controller.show.renderMessage("Too Many Books!")
-          return false;
-        } else {
-          app.shelf.controller.show.renderMessage("That Fits on Your Shelf!")
-          return true;
-        }
-      }
-
-      Shelf.prototype.fallsOff = function(){
-        //remove first books
-        this.books.splice(0, 1);
-      }
-
-      return Shelf;
-    }())
-  },
-
-  controller: {
-    show: {
-      render: function(shelf){
-        $('.shelfInfo').append('<p>Your shelf has '+ shelf.remainingSpace() +'mm of remaining space</p>')
-
-      },
-      renderMessage: function(msg){
-        $('.shelverResponse').empty();
-        $('.shelverResponse').append(msg);
-      }
-    }
-
-  }
-
 }
 
