@@ -196,21 +196,22 @@ app.shelf={
         var space;
         space = this.length - this.bookDisplacementTotal;
         
-        if (space > 0){
-          return space;
-        } else {
-          return 0;
-        }
+        return space;
       }
 
       Shelf.prototype.addBook= function(book){
         if (this.isThereRoom(book)){
+
           this.books.push(book);
-          this.bookDisplacementTotal+= book.thickness();
+          this.bookDisplacementTotal += book.thickness();
         } else {
+          // first add the book there isnt room for
+
           this.books.push(book);
-          this.bookDisplacementTotal+= book.thickness();
+          this.bookDisplacementTotal += book.thickness();
+          // then subtract the book that fell off 
           var fallenBook = this.fallsOff();
+          this.bookDisplacementTotal -= fallenBook.thickness();
           app.book.controller.show.renderFallen(fallenBook);
         }
       }
