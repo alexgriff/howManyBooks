@@ -174,7 +174,7 @@ app.book = {
            var img;
            var book;
            
-          if(response.items){
+          if(response.items && response.items[0].volumeInfo.pageCount){
             bookInfo = response.items[0].volumeInfo;
             title = bookInfo.title;
             pageCount = bookInfo .pageCount;
