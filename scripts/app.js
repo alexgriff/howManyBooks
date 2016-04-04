@@ -23,12 +23,14 @@ $(function(){
   $('#person_mouthSize').val(friend.mouthSize);
   $('.personForm').hide();
   $('.importantMetrics').hide();
+  $('.person').hide();
+
 
   // add listeners
   $('input:submit').click(function(){
     currentShelf = shelf;
     app.book.controller.show.init(event)
-    
+    $('.person').show();
   });
 
   $('#person_name').keyup(function(){
