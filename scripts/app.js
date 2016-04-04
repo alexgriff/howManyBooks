@@ -15,7 +15,7 @@ $(function(){
   // render shelf space and hide until first book
   app.shelf.controller.show.render(shelf);
   $('.shelf').hide();
-
+  $('.shelfContents').hide();
   
   // fill in person defaults
   $('#person_name').val(friend.name);

@@ -1,3 +1,4 @@
+
 app.book = {
   
   // ----------
@@ -90,6 +91,7 @@ app.book = {
       },
       render: function(book){
         $('.shelf').show();
+        $('.shelfContents').show();
         $('.shelf').prepend('<div class="book" id="'+book.id+'" style="display: inline; padding: .15em;"><img src='+ book.img +'></div>')
       },
       renderFailure: function() {
