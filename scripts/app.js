@@ -139,6 +139,7 @@ app.book = {
       },
       render: function(book){
         $('.shelf').show();
+
         $('.shelf').prepend('<div class="book" id="'+book.id+'" style="display: inline; padding: .15em;"><img src='+ book.img +'></div>')
       },
       renderFailure: function() {
@@ -154,7 +155,7 @@ app.book = {
         var book;
         book = app.book.model.find(bookId);
         app.person.controller.show.render(person, book);
-        $('.importantMetrics').toggle()
+        $('.importantMetrics').modal({fadeDuration: 1000, fadeDelay: 0.30});
       }
     }
   },
