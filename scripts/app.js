@@ -9,7 +9,8 @@ var friend;
 // ON DOCUMENT READY
 $(function(){
   // initialize person and shelf models
-  friend= app.person.model.genericPerson();
+  friend= new app.person.model.new();
+  friend = friend.genericPerson();
   var shelf = new app.shelf.model.new();
 
   // render shelf space
@@ -29,7 +30,7 @@ $(function(){
     app.book.controller.show.init(event)
     $('.importantMetrics').show();
   });
-  $('button').click(function(){
+  $('#custom_person').click(function(){
     $('.personForm').toggle();
   });
 
@@ -121,33 +122,7 @@ app.book = {
       },
       render: function(book){
         $('.shelf').prepend('<img src='+ book.img +'>')
-        var btmth=  friend.booksBy("mouth", book).toFixed(2);
-        var bth=    friend.booksBy("height", book).toFixed(2);
-    
-        $('#booksToMouth').text(btmth);
-        $('.personForm').hide();
-        $('#booksToHeight').text(bth);
-        $('.pName').text(friend.name);
-        
-        // // is there room on shelf
-        // if (shelf.isThereRoom(book)) {
-        //   // add book thumbnail
-        //   $('.shelf').prepend('<img src='+ book.img +'>')
-        //   // add book to shelf
-        //   shelf.addBook(book);
-        // } else {
-        //   // add book thumbnail
-        //   $('.shelf').prepend('<img src='+ book.img +'>')
-        //   // add book to shelf
-        //   shelf.addBook(book);
-        //   shelf.fallsOff()
-        // }
-        //   // empty currentShelf info
-        //   $('.shelfInfo').empty();
-        //   // render shelf info
-        //   app.shelf.controller.show.render(shelf);
-
-        
+        app.person.controller.show.render(friend, book);
       },
       renderFailure: function() {
         $('.error').append("<p>Sorry, we couldn't find that book </p>")
@@ -298,6 +273,9 @@ app.shelf={
 //      PERSON
 // =================
 app.person={
+  // ----------
+  //   MODEL
+  // ----------
   model:{
     new:(function(){
       var counter = 0;
@@ -319,12 +297,40 @@ app.person={
         return numBooks;
       };
 
+      Person.prototype.genericPerson = function() {
+        this.height = 1600;
+        this.mouthSize = 50;
+        this.name = "The Average Person";
+        return this;
+      }
+
       return Person;
-    }()),
-    genericPerson:(function(){
-      var friend = new app.person.model.new(1600, 50, "The Average Person");
-      return friend;
-    })
+    }())
+  },
+
+  // ----------------
+  //   CONTROLLER
+  // ----------------
+  controller: {
+    show: {
+      render: function(person, book) {
+        var bookToMouth=  person.booksBy("mouth", book).toFixed(2);
+        var bookToHeight=    person.booksBy("height", book).toFixed(2);
+        $('.importantMetrics').append("<p>It would take "+bookToHeight+" copies of "+book.title+" to equal "+person.name+"'s height.</p>")
+        $('.importantMetrics').append("<p>You should be able to fit approximately "+bookToMouth+" copies of "+book.title+" into "+person.name+"'s mouth.</p>")
+      }
+    }
   }
 }
+
+
+// $('.importantMetrics').show();
+
+// var btmth=  friend.booksBy("mouth", book).toFixed(2);
+// var bth=    friend.booksBy("height", book).toFixed(2);
+    
+// $('#booksToMouth').text(btmth);
+// $('.personForm').hide();
+// $('#booksToHeight').text(bth);
+// $('.pName').text(friend.name);
 
