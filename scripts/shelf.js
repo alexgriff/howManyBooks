@@ -74,7 +74,7 @@ app.shelf={
         $('.shelfContents ul').empty();
 
         // update spaceinfo
-        $('.shelfInfo').append('<p>Your book shelf has '+ shelf.remainingSpace() +' millimeters of free space</p>')
+        $('.shelfInfo').append('<p>Your book shelf has <strong>'+ shelf.remainingSpace() +'</strong> millimeters of free space</p>')
 
         // render each book on shelf and add info
         for(var i = 0; i < shelf.books.length; i ++){
