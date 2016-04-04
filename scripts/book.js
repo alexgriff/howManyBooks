@@ -124,12 +124,11 @@ app.book = {
           
           if (response.items) {
             // query the api with the volume id to get all the info
-          
+            // debugger;
             var volumeId = response.items[0].id;
-
             return  $.ajax({
               method: "GET",
-              url: "https://www.googleapis.com/books/v1/volumes/"+volumeId+"?key=AIzaSyC685-F4yBsQ7HVXepYJMsRlIsaV4L6tes"
+              url: "https://www.googleapis.com/books/v1/volumes/"+volumeId+"?key="+APIKEY
             }).then(function(response){
             
               var bookInfo;
