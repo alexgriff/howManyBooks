@@ -13,8 +13,9 @@ $(function(){
   friend = friend.genericPerson();
   var shelf = new app.shelf.model.new();
 
-  // render shelf space
+  // render shelf space and hide until first book
   app.shelf.controller.show.render(shelf);
+  $('.shelf').hide();
 
   
   // fill in person defaults
@@ -43,7 +44,6 @@ $(function(){
 
 })
 
-// $('.importantMetrics').show();
 
 // =================
 //      BOOK
@@ -138,7 +138,8 @@ app.book = {
 
       },
       render: function(book){
-        $('.shelf').prepend('<div class="book" id="'+book.id+'" style="display: inline"><img src='+ book.img +'></div>')
+        $('.shelf').show();
+        $('.shelf').prepend('<div class="book" id="'+book.id+'" style="display: inline; padding: .15em;"><img src='+ book.img +'></div>')
       },
       renderFailure: function() {
         $('.error').append("<p>Sorry, we couldn't find that book </p>")
@@ -146,7 +147,7 @@ app.book = {
       },
       renderFallen: function(fallenBook) {
         $('.floor').css("display", "block");
-        $('.fallen').append('<div class="book" id="'+fallenBook.id+'" style="display: inline"><img class=fallen_off src='+ fallenBook.img +'></div>');
+        $('.fallen').append('<div class="book" id="'+fallenBook.id+'" style="display: inline; "><img class=fallen_off src='+ fallenBook.img +'></div>');
         $('.fallen_off').rotate(45);
       },
       renderBookToPerson: function(bookId, person){
@@ -345,14 +346,4 @@ app.person={
   }
 }
 
-
-// $('.importantMetrics').show();
-
-// var btmth=  friend.booksBy("mouth", book).toFixed(2);
-// var bth=    friend.booksBy("height", book).toFixed(2);
-    
-// $('#booksToMouth').text(btmth);
-// $('.personForm').hide();
-// $('#booksToHeight').text(bth);
-// $('.pName').text(friend.name);
 
