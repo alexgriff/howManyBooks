@@ -28,15 +28,22 @@ $(function(){
   $('input:submit').click(function(){
     currentShelf = shelf;
     app.book.controller.show.init(event)
-    $('.importantMetrics').show();
+    
   });
+  
   $('#custom_person').click(function(){
     $('.personForm').toggle();
   });
 
+  $('body').on("click", ".book", function() {
+    var bookId;
+    bookId = $(this).attr("id")
+    app.book.controller.show.renderBookToPerson(bookId, friend);
+  })
+
 })
 
-
+// $('.importantMetrics').show();
 
 // =================
 //      BOOK
@@ -54,6 +61,8 @@ app.book = {
         this.title = title;
         this.pageCount = pageCount;
         this.img = img;
+        this.id = ++counter;
+        app.book.model.all.push(this);
       }
 
       Book.prototype.thickness = function(){
@@ -72,7 +81,15 @@ app.book = {
       }
 
       return Book;
-    }())
+    }()),
+
+    all: [],
+
+    find: (function(id){
+      return $.grep(app.book.model.all, function(book) {
+        return book.id == id
+      })[0];    
+    })
   },
   
   // ----------------
@@ -121,18 +138,22 @@ app.book = {
 
       },
       render: function(book){
-        $('.shelf').prepend('<img src='+ book.img +'>')
-        app.person.controller.show.render(friend, book);
+        $('.shelf').prepend('<div class="book" id="'+book.id+'" style="display: inline"><img src='+ book.img +'></div>')
       },
       renderFailure: function() {
         $('.error').append("<p>Sorry, we couldn't find that book </p>")
 
       },
-
       renderFallen: function(fallenBook) {
         $('.floor').css("display", "block");
-        $('.fallen').append('<img class=fallen_off src='+ fallenBook.img +'>');
+        $('.fallen').append('<div class="book" id="'+fallenBook.id+'" style="display: inline"><img class=fallen_off src='+ fallenBook.img +'></div>');
         $('.fallen_off').rotate(45);
+      },
+      renderBookToPerson: function(bookId, person){
+        var book;
+        book = app.book.model.find(bookId);
+        app.person.controller.show.render(person, book);
+        $('.importantMetrics').toggle()
       }
     }
   },
@@ -314,6 +335,7 @@ app.person={
   controller: {
     show: {
       render: function(person, book) {
+        $('.importantMetrics').empty();
         var bookToMouth=  person.booksBy("mouth", book).toFixed(2);
         var bookToHeight=    person.booksBy("height", book).toFixed(2);
         $('.importantMetrics').append("<p>It would take "+bookToHeight+" copies of "+book.title+" to equal "+person.name+"'s height.</p>")
