@@ -43,8 +43,8 @@ app.person={
         $('.importantMetrics').empty();
         var bookToMouth=  person.booksBy("mouth", book).toFixed(2);
         var bookToHeight=    person.booksBy("height", book).toFixed(2);
-        $('.importantMetrics').append("<p>It would take "+bookToHeight+" copies of \""+book.title+"\" to equal "+person.name+"'s height.</p>")
-        $('.importantMetrics').append("<p>You should be able to fit approximately "+bookToMouth+" copies of \""+book.title+"\" into "+person.name+"'s mouth.</p>")
+        $('.importantMetrics').append("<p>A stack of "+bookToHeight+" copies of \""+book.title+"\" would be the same height as "+person.name+".</p>")
+        $('.importantMetrics').append("<p>"+bookToMouth+" copies of \""+book.title+"\" would potentially fit into the mouth of "+person.name+".</p>")
       }
     }
   }
