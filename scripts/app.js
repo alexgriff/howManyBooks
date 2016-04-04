@@ -2,7 +2,6 @@ var app = {
 }
 //this shouldnt have to be a global var, but works for now
 var currentShelf;
-
 var friend;
 
 
