@@ -6,7 +6,7 @@ app.shelf={
     new:(function(){
       var counter= 0;
       function Shelf(){
-        this.length= 300; //millimeters;
+        this.length= 200; //millimeters;
         this.bookDisplacementTotal = 0;
         this.books = []
       }

@@ -105,7 +105,7 @@ app.book = {
         var book;
         book = app.book.model.find(bookId);
         app.person.controller.show.render(person, book);
-        $('.importantMetrics').modal({fadeDuration: 1000, fadeDelay: 0.30});
+        $('.importantMetrics').modal({fadeDuration: 500, fadeDelay: 0.30});
       }
     }
   },
@@ -144,7 +144,6 @@ app.book = {
               img = bookInfo.imageLinks.thumbnail;
 
               if (bookInfo.dimensions && bookInfo.dimensions.thickness){
-              
                 // will be in the format of "2.54 cm", so strip off last 3 chars
                 var thicknessString = bookInfo.dimensions.thickness;
                 // convert from cm to mm
