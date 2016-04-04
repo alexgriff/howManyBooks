@@ -21,8 +21,9 @@ $(function(){
   // fill in person defaults
   $('#person_name').val(friend.name);
   $('#person_height').val(friend.height);
-  $('#person_mouthSize').val(friend.mouthSize);
+  $('.person').hide();
   $('.personForm').hide();
+  $('#person_mouthSize').val(friend.mouthSize);
   $('.importantMetrics').hide();
 
   // add listeners
@@ -31,6 +32,12 @@ $(function(){
     app.book.controller.show.init(event)
     
   });
+
+  $('#book_title').keyup(function(){
+    title = $('#book_title').val();
+    author = $('#book_author').val();
+    app.search.new(title, author)
+  })
   
   $('#custom_person').click(function(){
     $('.personForm').toggle();

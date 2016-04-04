@@ -105,15 +105,21 @@ app.book = {
         book = app.book.model.find(bookId);
         app.person.controller.show.render(person, book);
         $('.importantMetrics').toggle()
+        $('.person').toggle();
       }
     }
   },
+
+
+
 
   // -------------
   //   ADAPTER
   // -------------
   adapter: {
     getBy: (function(book_title, author){
+
+      $('.unstyledResults').empty();
        return $.ajax({
          method: "GET",
          url: "https://www.googleapis.com/books/v1/volumes?q=" + book_title +"+inauthor:" + author

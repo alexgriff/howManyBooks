@@ -7,15 +7,17 @@
   <title>howManyBooks</title>
 
   <script src="scripts/jquery-2.1.1.min.js"></script>
-  <script type="text/javascript" src="http://beneposto.pl/jqueryrotate/js/jQueryRotateCompressed.js"></script>
+  
   <script type="text/javascript" src="scripts/jquery.autocomplete.min.js"></script>
   <script src="scripts/app.js"></script>
   <script src="scripts/book.js"></script>
   <script src="scripts/shelf.js"></script>
   <script src="scripts/person.js"></script>
+  <script src="scripts/search.js"></script>
+
 </head>
 <body style='margin-left:2.5em;'>
-  <h1 id="brand">How Many Books</h1>
+  <h1 id="brand">Voracious Reader</h1>
      
        
   <div class="details">Add a book to your bookshelf</div>
@@ -30,9 +32,26 @@
      </div>
      
      <input type="submit" value="Add book">
+     <div class='unstyledResults'>
+     </div>
   </form>
   
   <div class="error">
+  </div>
+
+  <div class="person">
+  <p>For the sake of novelty, We've included metrics to show how many copies of the most recent book would be needed to equal your height, as well as how many copies you'd be able to fit in the average person's mouth.</p>
+  <button type="button" id="custom_person">Click here to customize your information</button>
+   
+    <div class='personForm'>
+     <p> <label for="personName">Person Name</label>
+      <input id="person_name" class="input input_name" type="text"></p>
+      <p><label for="personHeight">Height (in mm)</label>
+      <input id="person_height" class="input input_height" type="text"></p>
+      <p><label for="mouthsize">Size of Mouth(in mm)</label>
+      <input id="person_mouthSize" class="input input_mouth" type="text"></p>
+    </div> 
+
   </div>
 
   <div class='importantMetrics'>
@@ -72,20 +91,7 @@
 
   <br/><br/>
 
-  <div class="person">
-  <p>For the sake of novelty, We've included metrics to show how many copies of the most recent book would be needed to equal your height, as well as how many copies you'd be able to fit in the average person's mouth.</p>
-  <button type="button" id="custom_person">Click here to customize your information</button>
-   
-    <div class='personForm'>
-     <p> <label for="personName">Person Name</label>
-      <input id="person_name" class="input input_name" type="text"></p>
-      <p><label for="personHeight">Height (in mm)</label>
-      <input id="person_height" class="input input_height" type="text"></p>
-      <p><label for="mouthsize">Size of Mouth(in mm)</label>
-      <input id="person_mouthSize" class="input input_mouth" type="text"></p>
-    </div> 
-
-  </div>
+  
 
 </body>
 </html>
