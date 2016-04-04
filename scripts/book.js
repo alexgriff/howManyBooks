@@ -164,8 +164,6 @@ app.book = {
           } 
         
         })
-      
-        return app.book.model.all[app.book.model.all.length-1];
       })
     }
   }
