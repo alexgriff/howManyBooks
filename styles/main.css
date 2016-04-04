@@ -1,0 +1,10 @@
+.background-transparency {
+	background-color: rgba(255, 255, 240, 0.85);
+	padding: 20px;
+	margin: 20px;
+   border-radius: 15px;
+}
+
+.shelfInfo {
+	font-size: 20px;
+}
