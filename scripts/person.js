@@ -46,6 +46,13 @@ app.person={
         $('.importantMetrics').append("<p>A stack of "+bookToHeight+" copies of \""+book.title+"\" would be the same height as "+person.name+".</p>")
         $('.importantMetrics').append("<p>"+bookToMouth+" copies of \""+book.title+"\" would potentially fit into the mouth of "+person.name+".</p>")
       }
+    },
+    create: function(){
+        var pName = $('#person_name').val();
+        var pHeight = $('#person_height').val();
+        var pMouthSize = $('#person_mouthSize').val();
+        friend = new app.person.model.new(pHeight, pMouthSize, pName)
+        return friend;
     }
   }
 }
