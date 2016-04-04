@@ -230,7 +230,7 @@ app.shelf={
           
           // then subtract the book that fell off 
           // and continue to do so until there is space
-          // (cant use the is there room method again b/c
+          // (cant use the isThereRoom method again b/c
           // current book has already been added to displacement total)
           while (this.bookDisplacementTotal > this.length){
             var fallenBook = this.fallsOff();
