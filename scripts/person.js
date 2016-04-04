@@ -46,6 +46,13 @@ app.person={
         $('.importantMetrics').append("<p>It would take "+bookToHeight+" copies of \""+book.title+"\" to equal "+person.name+"'s height.</p>")
         $('.importantMetrics').append("<p>You should be able to fit approximately "+bookToMouth+" copies of \""+book.title+"\" into "+person.name+"'s mouth.</p>")
       }
+    },
+    create: function(){
+        var pName = $('#person_name').val();
+        var pHeight = $('#person_height').val();
+        var pMouthSize = $('#person_mouthSize').val();
+        friend = new app.person.model.new(pHeight, pMouthSize, pName)
+        return friend;
     }
   }
 }

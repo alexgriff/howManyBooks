@@ -30,6 +30,23 @@ $(function(){
     app.book.controller.show.init(event)
     
   });
+
+  $('#person_name').keyup(function(){
+    friend = app.person.controller.create();
+
+  })
+
+  $('#person_height').keyup(function(){
+
+    friend = app.person.controller.create();
+
+  })
+
+  $('#person_mouthSize').keyup(function(){
+
+    friend = app.person.controller.create();
+
+  })
   
   $('#custom_person').click(function(){
     $('.personForm').toggle();

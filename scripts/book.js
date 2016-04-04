@@ -59,10 +59,7 @@ app.book = {
         author = $('#book_author').val();
 
         // grab the user's person input
-        var pName = $('#person_name').val();
-        var pHeight = $('#person_height').val();
-        var pMouthSize = $('#person_mouthSize').val();
-        friend = new app.person.model.new(pHeight, pMouthSize, pName)
+       
 
         //reset fields
         $('.error').empty();
