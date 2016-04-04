@@ -105,7 +105,7 @@ app.book = {
         var book;
         book = app.book.model.find(bookId);
         app.person.controller.show.render(person, book);
-        $('.importantMetrics').toggle()
+        $('.importantMetrics').modal({fadeDuration: 1000, fadeDelay: 0.30});
       }
     }
   },
