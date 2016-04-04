@@ -89,7 +89,7 @@ app.book = {
       render: function(book){
         $('.shelf').show();
         $('.shelfContents').show();
-        $('.shelf').prepend('<div class="book" id="'+book.id+'" style="display: inline; padding: .15em;"><img src='+ book.img +'></div>')
+        $('.shelf').prepend('<div class="book" id="'+book.id+'" style="display: inline; padding: .15em;"><img style="margin: 6px 2px 0 2px;" src='+ book.img +'></div>')
       },
       renderFailure: function() {
         $('.error').append("<p>Sorry, we couldn't find that book </p>")
